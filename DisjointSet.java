@@ -11,7 +11,7 @@ public class DisjointSet {
     }
 
     public int find(int item) {
-        if(sets[item] < 0) {
+        if(item < 0 || sets[item] < 0) {
             return item;
         }
 
@@ -32,25 +32,12 @@ public class DisjointSet {
         }
     }
 
-    public int getTeam(int num) { //since used path compression strategies in disjoint set
-        int check = sets[num];
-        int count = 0;
+    public int getTeam(int num) { //get team count
+        int check = num;//vertex number
 
-        if(check == -1) {//if it is the top of the tree
-            count++;//increase since top of tree
-            for(int i=0; i < sets.length; i++) {
-                if(sets[i] == num) {
-                    count++;//increase for every position in array that has data that matches position, num
-                }
-            }
-        } else {//if not the top of tree, check for every number
-            count++;//increase for top of tree
-            for(int i=0; i < sets.length; i++) {
-                if(sets[i] == check) {
-                    count++;//increase for every array that also matches check
-                }
-            }
+        while(sets[check] > -1) {//loop until top of the tree
+            check = sets[check];
         }
-        return count;//return the count
+        return sets[check] * -1;//return team count
     }
 }
